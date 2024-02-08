@@ -27,7 +27,10 @@ func NewGinServer(cfg *config.Config, db *gorm.DB) Server {
 }
 
 func (gs *ginServer) Start() {
-	// init routers here ...
+	// init routers here
+	gs.initUsersHttpHandler()
+	// end of routers
+
 	gs.app.Use(gin.Logger(), gin.Recovery())
 
 	serverAddr := fmt.Sprintf(":%d", gs.cfg.App.Port)
@@ -41,5 +44,7 @@ func (gs *ginServer) initUsersHttpHandler() {
 
 	// Routers
 	usersRouters := gs.app.Group("v1/users")
-	usersRouters.POST("", usersHttpHandler.RegisterUser)
+	{
+		usersRouters.POST("/register", usersHttpHandler.RegisterUser)
+	}
 }

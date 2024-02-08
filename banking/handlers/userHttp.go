@@ -25,5 +25,12 @@ func (h *userHttpHandler) RegisterUser(c *gin.Context) {
 		log.Errorf("error binding request body: %v", err)
 		response(c, http.StatusBadRequest, "Bad request")
 	}
+
+	if err := h.userUsecase.RegisterUser(reqBody); err != nil {
+		response(c, http.StatusInternalServerError, "Processing data failed")
+	}
 	response(c, http.StatusOK, "Created")
+}
+
+func (h *userHttpHandler) QueryUserFunds(c *gin.Context) {
 }

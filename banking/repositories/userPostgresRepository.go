@@ -1,4 +1,4 @@
-package respositories
+package repositories
 
 import (
 	"github.com/emaforlin/banking-api/banking/entities"
@@ -18,12 +18,12 @@ func (r *userPostgresRepository) InsertUserData(in *entities.InsertUserDto) erro
 	data := &entities.User{
 		FullName: in.FullName,
 	}
-	result := r.db.Create(data)
 
+	result := r.db.Create(data)
 	if result.Error != nil {
 		log.Errorf("InsertUserData: %v", result.Error)
 		return result.Error
 	}
 	log.Debugf("InsertUserData: %v", result.RowsAffected)
-	return nil
+	return result.Error
 }

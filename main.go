@@ -10,4 +10,5 @@ func main() {
 	cfg := config.GetConfig()
 	database := database.NewPosgresDatabase(&cfg)
 	server.NewGinServer(&cfg, database.GetDb()).Start()
+
 }

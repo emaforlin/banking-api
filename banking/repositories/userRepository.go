@@ -1,4 +1,4 @@
-package respositories
+package repositories
 
 import "github.com/emaforlin/banking-api/banking/entities"
 

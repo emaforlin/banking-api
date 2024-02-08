@@ -3,24 +3,25 @@ package usecases
 import (
 	"github.com/emaforlin/banking-api/banking/entities"
 	"github.com/emaforlin/banking-api/banking/models"
-	"github.com/emaforlin/banking-api/banking/respositories"
+	"github.com/emaforlin/banking-api/banking/repositories"
 )
 
 type UserUsecase interface {
-	UserDataProcessing(in *models.AddUserData) error
+	RegisterUser(in *models.AddUserData) error
+	// GetUserByName(name string) (out *models.ShowUserData)
 }
 
 type userUsecaseImpl struct {
-	userRepository respositories.UserRepository
+	userRepository repositories.UserRepository
 }
 
-func NewUserUsecaseImpl(userRepo respositories.UserRepository) UserUsecase {
+func NewUserUsecaseImpl(userRepo repositories.UserRepository) UserUsecase {
 	return &userUsecaseImpl{
 		userRepository: userRepo,
 	}
 }
 
-func (u *userUsecaseImpl) UserDataProcessing(in *models.AddUserData) error {
+func (u *userUsecaseImpl) RegisterUser(in *models.AddUserData) error {
 	insertUserData := &entities.InsertUserDto{
 		FullName: in.FullName,
 	}
