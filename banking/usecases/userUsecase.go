@@ -1,9 +1,13 @@
 package usecases
 
 import (
+	"html"
+	"strings"
+
 	"github.com/emaforlin/banking-api/banking/entities"
 	"github.com/emaforlin/banking-api/banking/models"
 	"github.com/emaforlin/banking-api/banking/repositories"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserUsecase interface {
@@ -22,10 +26,14 @@ func NewUserUsecaseImpl(userRepo repositories.UserRepository) UserUsecase {
 }
 
 func (u *userUsecaseImpl) RegisterUser(in *models.AddUserData) error {
+	hashPasswd, err := bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
 	insertUserData := &entities.InsertUserDto{
 		FullName: in.FullName,
-		Username: in.Username,
-		Password: in.Password,
+		Username: html.EscapeString(strings.TrimSpace(in.Username)),
+		Password: string(hashPasswd),
 	}
 
 	if err := u.userRepository.InsertUserData(insertUserData); err != nil {

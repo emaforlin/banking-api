@@ -23,8 +23,9 @@ func (r *userPostgresRepository) InsertUserData(in *entities.InsertUserDto) erro
 		Password: in.Password,
 	}
 	out := &entities.User{}
-	r.db.Where("username = ?", in.Username).First(&out)
-	if out.Username == in.Username {
+	res := r.db.Where("username = ?", in.Username).First(&out)
+	// if out.Username == in.Username {
+	if res.RowsAffected > 0 {
 		log.Errorf("InsertUserData: username already exists")
 		return fmt.Errorf("InsertUserData: username already exists")
 	}
