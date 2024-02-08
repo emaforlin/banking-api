@@ -1,6 +1,6 @@
 package models
 
-type addUserData struct {
+type AddUserData struct {
 	FullName string `json: "fullname"`
 }
 
