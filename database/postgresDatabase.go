@@ -24,7 +24,7 @@ func NewPosgresDatabase(cfg *config.Config) Database {
 		cfg.App.TimeZone,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn))
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
