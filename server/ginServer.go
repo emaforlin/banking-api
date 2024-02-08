@@ -3,6 +3,9 @@ package server
 import (
 	"fmt"
 
+	userHandlers "github.com/emaforlin/banking-api/banking/handlers"
+	userRepository "github.com/emaforlin/banking-api/banking/repositories"
+	userUsecases "github.com/emaforlin/banking-api/banking/usecases"
 	"github.com/emaforlin/banking-api/config"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -29,4 +32,14 @@ func (gs *ginServer) Start() {
 
 	serverAddr := fmt.Sprintf(":%d", gs.cfg.App.Port)
 	gs.app.Run(serverAddr)
+}
+
+func (gs *ginServer) initUsersHttpHandler() {
+	usersRepository := userRepository.NewUserPostgresRepository(gs.db)
+	usersUsecase := userUsecases.NewUserUsecaseImpl(usersRepository)
+	usersHttpHandler := userHandlers.NewUserHttpHandler(usersUsecase)
+
+	// Routers
+	usersRouters := gs.app.Group("v1/users")
+	usersRouters.POST("", usersHttpHandler.RegisterUser)
 }
