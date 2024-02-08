@@ -44,7 +44,7 @@ func GetConfig() Config {
 			Host:    viper.GetString("database.host"),
 			Port:    viper.GetUint16("database.port"),
 			User:    viper.GetString("database.user"),
-			Passwd:  viper.GetString("database.passwd"),
+			Passwd:  viper.GetString("database.password"),
 			DBname:  viper.GetString("database.dbname"),
 			SSLMode: viper.GetString("database.sslmode"),
 		},
