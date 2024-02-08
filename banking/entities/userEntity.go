@@ -12,7 +12,7 @@ type (
 
 	User struct {
 		Id        uint64    `json:"id"`
-		FullName  string    `json: "fullname"`
+		FullName  string    `json: "fullName"`
 		Funds     int64     `json: "funds"`
 		CreatedAt time.Time `json: "createdAt"`
 	}

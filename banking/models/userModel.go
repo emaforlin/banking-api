@@ -1,7 +1,7 @@
 package models
 
 type AddUserData struct {
-	FullName string `json: "fullname"`
+	FullName string `json: "fullName"`
 }
 
 // add data validations here
