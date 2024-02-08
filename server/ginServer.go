@@ -15,6 +15,7 @@ type ginServer struct {
 }
 
 func NewGinServer(cfg *config.Config, db *gorm.DB) Server {
+
 	return &ginServer{
 		app: gin.New(),
 		db:  db,
@@ -24,8 +25,7 @@ func NewGinServer(cfg *config.Config, db *gorm.DB) Server {
 
 func (gs *ginServer) Start() {
 	// init routers here ...
-
-	gs.app.Use(gin.Logger())
+	gs.app.Use(gin.Logger(), gin.Recovery())
 
 	serverAddr := fmt.Sprintf(":%d", gs.cfg.App.Port)
 	gs.app.Run(serverAddr)
