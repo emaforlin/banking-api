@@ -21,16 +21,25 @@ func NewUserHttpHandler(useCase usecases.UserUsecase) UserHandler {
 
 func (h *userHttpHandler) RegisterUser(c *gin.Context) {
 	reqBody := new(models.AddUserData)
-	if err := c.Bind(reqBody); err != nil {
+	if err := c.ShouldBindJSON(reqBody); err != nil {
 		log.Errorf("error binding request body: %v", err)
-		response(c, http.StatusBadRequest, "Bad request")
+		response(c, http.StatusBadRequest, "Bad request", reqBody)
+		return
 	}
 
 	if err := h.userUsecase.RegisterUser(reqBody); err != nil {
-		response(c, http.StatusInternalServerError, "Processing data failed")
+		response(c, http.StatusInternalServerError, "Processing data failed", nil)
+		return
 	}
-	response(c, http.StatusOK, "Created")
+	response(c, http.StatusOK, "Created", reqBody)
 }
 
-func (h *userHttpHandler) QueryUserFunds(c *gin.Context) {
+func (h *userHttpHandler) QueryUser(c *gin.Context) {
+	name := c.Param("fullname")
+	obtainedUserData, err := h.userUsecase.GetUserByName(name)
+	if err != nil {
+		response(c, http.StatusInternalServerError, "error obtaining data", "")
+	}
+	response(c, http.StatusOK, "ok", *obtainedUserData)
+
 }

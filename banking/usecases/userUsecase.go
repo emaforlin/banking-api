@@ -8,7 +8,7 @@ import (
 
 type UserUsecase interface {
 	RegisterUser(in *models.AddUserData) error
-	// GetUserByName(name string) (out *models.ShowUserData)
+	GetUserByName(name string) (*models.ShowUserData, error)
 }
 
 type userUsecaseImpl struct {
@@ -24,9 +24,24 @@ func NewUserUsecaseImpl(userRepo repositories.UserRepository) UserUsecase {
 func (u *userUsecaseImpl) RegisterUser(in *models.AddUserData) error {
 	insertUserData := &entities.InsertUserDto{
 		FullName: in.FullName,
+		Username: in.Username,
+		Password: in.Password,
 	}
+
 	if err := u.userRepository.InsertUserData(insertUserData); err != nil {
 		return err
 	}
 	return nil
+}
+
+func (u *userUsecaseImpl) GetUserByName(name string) (*models.ShowUserData, error) {
+	obtainedUserData := &entities.User{}
+	if err := u.userRepository.RetrieveUserData(name, obtainedUserData); err != nil {
+		return nil, err
+	}
+	return &models.ShowUserData{
+		FullName: obtainedUserData.FullName,
+		Funds:    obtainedUserData.Funds,
+	}, nil
+
 }

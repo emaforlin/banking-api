@@ -46,5 +46,6 @@ func (gs *ginServer) initUsersHttpHandler() {
 	usersRouters := gs.app.Group("v1/users")
 	{
 		usersRouters.POST("/register", usersHttpHandler.RegisterUser)
+		usersRouters.GET("/:fullname", usersHttpHandler.QueryUser)
 	}
 }
